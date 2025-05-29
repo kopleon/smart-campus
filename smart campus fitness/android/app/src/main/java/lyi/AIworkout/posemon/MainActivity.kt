@@ -402,6 +402,7 @@ class MainActivity : AppCompatActivity() {
         timerCount = 60
         lastTimerStamp = -1
         textView9.text = "$timerCount 秒"
+        doingaction = 0
     }
 
     /** 检查相机权限是否有授权 */
