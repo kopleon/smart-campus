@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/fit" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="240dp"
+            android:layout_height="144dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="96dp"
+            android:layout_marginTop="111dp"
+            android:text="AI fitness"
+            android:textColor="#0AD0EA"
+            android:textSize="50dp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="252dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="78.5dp"
+            android:layout_marginTop="462dp"
+            android:gravity="center"
+            android:text="AI體適能"
+            android:textColor="#8BC34A"
+            android:textSize="40dp" />
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="250dp"
+            android:layout_height="97dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="81dp"
+            android:layout_marginTop="462dp"
+            android:layout_marginEnd="0dp"
+            android:alpha="0.3"
+            android:background="@color/teal_200" />
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

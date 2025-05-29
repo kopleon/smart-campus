@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    tools:context="lyi.AIworkout.posemon.MainActivity">
+
+    <SurfaceView
+        android:id="@+id/surfaceView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="311dp"
+            android:layout_height="34dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="69dp"
+            android:layout_marginTop="62dp"
+            android:text="TextView"
+            android:textColor="#ffffff" />
+
+        <ImageButton
+            android:id="@+id/smallimageshows"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="7dp"
+            android:layout_marginRight="16dp"
+            android:scaleType="fitXY"
+            android:src="@android:drawable/btn_star"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/now_act"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            android:gravity="center"
+            android:text="正在做："
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/act_time"
+            android:layout_width="171dp"
+            android:layout_height="36dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="27dp"
+            android:layout_marginEnd="121dp"
+            android:alpha="0"
+            android:gravity="center"
+            android:text=" "
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottom_sheet"
+            android:layout_width="match_parent"
+            android:layout_height="191dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="0dp"
+            android:background="@drawable/card_background">
+
+
+            <ImageButton
+                android:id="@+id/handsback"
+                android:layout_width="101dp"
+                android:layout_height="88dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="224dp"
+                android:alpha="1"
+                android:backgroundTint="#00000000"
+                android:contentDescription="handsback"
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/pushup"
+                tools:ignore="MissingConstraints" />
+
+            <ImageButton
+                android:id="@+id/handsup"
+                android:layout_width="98dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="172dp"
+                android:layout_marginTop="12dp"
+                android:contentDescription="handsup"
+                android:scaleType="fitXY"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/situp"
+                tools:ignore="MissingConstraints" />
+
+            <ImageButton
+                android:id="@+id/handsfront"
+                android:layout_width="95dp"
+                android:layout_height="99dp"
+                android:layout_marginStart="284dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="handsfront"
+                android:scaleType="fitXY"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/plack"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/tvCamera"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginBottom="4dp"
+                android:text="鏡頭方向:"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="MissingConstraints" />
+
+            <Spinner
+                android:id="@+id/spnCamera"
+                android:layout_width="172dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="52dp"
+                android:layout_marginBottom="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tvCamera"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/hands_"
+                android:layout_width="102dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="28dp"
+                android:text="action:"
+                android:textSize="25dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
+
+            <ImageView
+                android:id="@+id/handsbacktick"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:alpha="0"
+                android:background="#00000000"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/handsback"
+                app:layout_constraintEnd_toEndOf="@+id/handsback"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/handsback"
+                app:layout_constraintTop_toTopOf="@+id/handsback"
+                app:layout_constraintVertical_bias="1.0"
+                app:srcCompat="@drawable/tick"
+                tools:ignore="MissingConstraints" />
+
+            <ImageView
+                android:id="@+id/handsuptick"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:alpha="0"
+                android:background="#00000000"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/handsup"
+                app:layout_constraintEnd_toEndOf="@+id/handsup"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/handsup"
+                app:layout_constraintTop_toTopOf="@+id/handsup"
+                app:layout_constraintVertical_bias="1.0"
+                app:srcCompat="@drawable/tick"
+                tools:ignore="MissingConstraints" />
+
+            <ImageView
+                android:id="@+id/handsfronttick"
+                android:layout_width="53dp"
+                android:layout_height="54dp"
+                android:alpha="0"
+                android:background="#00000000"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/handsfront"
+                app:layout_constraintEnd_toEndOf="@+id/handsfront"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/handsfront"
+                app:layout_constraintTop_toTopOf="@+id/handsfront"
+                app:layout_constraintVertical_bias="1.0"
+                app:srcCompat="@drawable/tick"
+                tools:ignore="MissingConstraints" />
+
+            <ImageView
+                android:id="@+id/foottick"
+                android:layout_width="28dp"
+                android:layout_height="24dp"
+                android:alpha="0"
+                android:background="#00000000"
+                android:visibility="visible"
+                app:srcCompat="@drawable/tick"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="340dp"
+                tools:layout_editor_absoluteY="129dp" />
+
+            <ImageView
+                android:id="@+id/foot1tick"
+                android:layout_width="23dp"
+                android:layout_height="22dp"
+                android:alpha="0"
+                android:background="#00000000"
+                android:visibility="visible"
+                app:srcCompat="@drawable/tick"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="408dp"
+                tools:layout_editor_absoluteY="130dp" />
+
+            <ImageView
+                android:id="@+id/hiptick"
+                android:layout_width="20dp"
+                android:layout_height="22dp"
+                android:alpha="0"
+                android:background="#00000000"
+                android:visibility="visible"
+                app:srcCompat="@drawable/tick"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="394dp"
+                tools:layout_editor_absoluteY="18dp" />
+
+            <Button
+                android:id="@+id/buttonReset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="reset"
+                android:text="reset"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.922"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.916" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/showcaseimage"
+            android:layout_width="wrap_content"
+            android:layout_height="520dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="83dp"
+            android:layout_marginEnd="35dp"
+            android:layout_marginBottom="128dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/handback" />
+
+        <Button
+            android:id="@+id/button7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:text="返回"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/VideoFrame"
+        android:layout_width="match_parent"
+        android:layout_height="595dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="60dp"
+        android:background="#000000"
+        android:visibility="invisible"
+        app:layout_anchor="@+id/surfaceView"
+        app:layout_anchorGravity="center" />
+
+    <ImageView
+        android:id="@+id/necktick"
+        android:layout_width="20dp"
+        android:layout_height="27dp"
+        android:alpha="0"
+        android:background="#00000000"
+        android:visibility="visible"
+        app:layout_anchor="@+id/VideoFrame"
+        app:layout_anchorGravity="start|bottom"
+        app:srcCompat="@drawable/tick"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/closeimage"
+        android:layout_width="62dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="58dp"
+        android:layout_marginEnd="27dp"
+        android:text="X"
+        android:visibility="gone"
+        app:layout_anchor="@+id/surfaceView"
+        app:layout_anchorGravity="start|top" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,39 @@
+<resources>
+    <!-- 缩写 tfe-pe: tensorflow lite pose estimation-->
+    <string name="tfe_pe_app_name">PoseMon</string>
+    <string name="tfe_pe_request_permission">This app needs camera permission.</string>
+    <string name="tfe_pe_tv_score">Score: %.2f</string>
+    <string name="tfe_pe_tv_model">Model: MoveNet Thunder</string>
+    <string name="tfe_pe_tv_fps">Fps: %d</string>
+    <string name="tfe_pe_tv_debug">DEBUG: %s</string>
+    <string name="tfe_pe_tv_device">Device: </string>
+    <string name="tfe_pe_tv_camera">Camera: </string>
+    <string name="oshc" translatable="false"><a href = "https://www.oshc.org.hk/tchi/main/index.html">oshc</a></string>
+    <string name="survey" translatable="false">職業安全問卷</string>
+    <string name="worktime" translatable="false">工作時間?</string>
+    <string name="mutiaction" translatable="false">重複機械性動作?</string>
+    <string name="rest" translatable="false">休息</string>
+    <string name="less2hour" translatable="false">少於 2 小時</string>
+    <string name="_2_4hour" translatable="false">2 至 4 小時</string>
+    <string name="_4_8hour" translatable="false">4 至 8 小時</string>
+    <string name="more8hour" translatable="false">超過8小時</string>
+    <string name="less10permin" translatable="false">每分鐘 10 次或更少</string>
+    <string name="_11_20permin" translatable="false">每分鐘11-20次</string>
+    <string name="more21permin" translatable="false">每分鐘超過21次</string>
+    <string name="less1hour" translatable="false">少於一小時，或整個工作期間每隔幾分鐘頻繁短暫休息</string>
+    <string name="_1_2hour" translatable="false">1小時至2小時以下</string>
+    <string name="_2_3hour" translatable="false">2小時至3小時以下</string>
+    <string name="_3_4hour" translatable="false">3小時至4小時以下</string>
+    <string name="more4hour" translatable="false">4小時或以上</string>
+
+    <string-array name="tfe_pe_device_name">
+        <item>CPU</item>
+        <item>GPU</item>
+        <item>NNAPI</item>
+    </string-array>
+
+    <string-array name="tfe_pe_camera_name">
+        <item>後</item>
+        <item>前</item>
+    </string-array>
+</resources>
