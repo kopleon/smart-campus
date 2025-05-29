@@ -9,7 +9,7 @@ import android.view.View
 import android.webkit.WebView
 import android.widget.Button
 import android.widget.TextView
-import lyi.AIworkout.posemon.data.SurveyResult
+
 
 
 
@@ -28,7 +28,7 @@ class MainActivity3 : AppCompatActivity() {
 
 
 
-        val total = SurveyResult.Total
+
 
 
         //println(diff)
