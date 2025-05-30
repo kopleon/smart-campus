@@ -24,7 +24,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.PointF
 import android.media.MediaPlayer
@@ -61,12 +60,9 @@ import lyi.AIworkout.posemon.ml.ModelType
 import lyi.AIworkout.posemon.ml.MoveNet
 import lyi.AIworkout.posemon.ml.PoseClassifier
 import java.lang.System.currentTimeMillis
-import java.text.SimpleDateFormat
-import java.util.Calendar
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.atan2
-import kotlinx.coroutines.*
 
 
 fun calculateAngle(point1: Array<Double>, point2: Array<Double>, point3: Array<Double>): Double {
@@ -92,25 +88,14 @@ fun pointFToArray(point: PointF?): Array<Double> {
 }
 
 
-var doingdirection = "左"
-var handsfrontcantick = false
 var PlayingVideo = false
-var doneagroup = false
 var wrongaction = false
 var wrongaction1 = false
 var doingaction = 0
-var rightneck = 0
-var leftneck = 0
 var acttime = 0
-var countdoingaction = false
-val time1 = Calendar.getInstance().time
 @SuppressLint("SimpleDateFormat")
-val formatter = SimpleDateFormat("yyyy-MM-dd")
-val currenttime = formatter.format(time1)
 var start = false
 var time = 0
-var lastTimerStamp = -1
-var timerCount = 60
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -122,25 +107,14 @@ class MainActivity : AppCompatActivity() {
 
     /** 修改默认计算设备：CPU、GPU、NNAPI（AI加速器） */
     private var device = Device.CPU
+
     /** 修改默认摄像头：FRONT、BACK */
     private var selectedCamera = Camera.BACK
 
-    /** 定义几个计数器 */
-    private var forwardheadCounter = 0
-    private var crosslegCounter = 0
-    private var standardCounter = 0
-    private var missingCounter = 0
-    private var lastTimeStartUnixTime = 0;
-
-    /** 定义一个历史姿态寄存器 */
-    private var poseRegister = "standard"
-
-    /** 设置一个用来显示 Debug 信息的 TextView */
-    //private lateinit var tvDebug: TextView
 
     /** 设置一个用来显示当前坐姿状态的 ImageView */
     //private lateinit var ivStatus: ImageView
-    private lateinit var VideoFrame:FrameLayout
+    private lateinit var VideoFrame: FrameLayout
     private lateinit var showcaseimage: ImageView
     private lateinit var handsbacktick: ImageView
     private lateinit var handsfronttick: ImageView
@@ -150,32 +124,22 @@ class MainActivity : AppCompatActivity() {
     private lateinit var foot1tick: ImageView
     private lateinit var hiptick: ImageView
     private lateinit var smallimageshows: ImageButton
-    private lateinit var hip: ImageButton
-    private lateinit var foot1: ImageButton
-    private lateinit var foot: ImageButton
-    private lateinit var neck: ImageButton
     private lateinit var hands_: TextView
-    private lateinit var hip_: TextView
-    private lateinit var neck_:TextView
-    private lateinit var foot_:TextView
     private lateinit var nowact: TextView
     private lateinit var actTimes: TextView
-    private lateinit var tvFPS: TextView
-    private lateinit var tvScore: TextView
-    //private lateinit var spnDevice: Spinner
     private lateinit var spnCamera: Spinner
     private lateinit var closeimage: Button
     private lateinit var hand1: ImageButton
     private lateinit var hand2: ImageButton
     private lateinit var hand3: ImageButton
     private lateinit var back: Button
-    private lateinit var handup: Button
     private lateinit var showcaseVideo: VideoView
     private var cameraSource: CameraSource? = null
     private var isClassifyPose = true
-    private lateinit var textView9:TextView
+    private lateinit var textView9: TextView
     private var lastTimerStamp: Long = -1L
-    private var timerCount: Int = 60  // or whatever default value
+    private var timerCount: Int = 60
+    private var mediaPlayer: MediaPlayer? = null
 
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -191,15 +155,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    private var changeDeviceListener = object : AdapterView.OnItemSelectedListener {
-        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            changeDevice(position)
-        }
-
-        override fun onNothingSelected(parent: AdapterView<*>?) {
-            /** 如果用户未选择运算设备，使用默认设备进行计算 */
-        }
-    }
 
     private var changeCameraListener = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(p0: AdapterView<*>?, view: View?, direction: Int, id: Long) {
@@ -210,6 +165,7 @@ class MainActivity : AppCompatActivity() {
             /** 如果用户未选择摄像头，使用默认摄像头进行拍摄 */
         }
     }
+
     private fun timerCountDown() {
         val nowTime = System.currentTimeMillis()
         if (lastTimerStamp == -1L) {
@@ -222,6 +178,7 @@ class MainActivity : AppCompatActivity() {
             lastTimerStamp = nowTime
         }
     }
+
     private fun resetTimer() {
         timerCount = 10  // Or your desired starting value
         lastTimerStamp = -1L
@@ -229,11 +186,13 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-        @RequiresApi(Build.VERSION_CODES.O)
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingInflatedId", "ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        mediaPlayer = MediaPlayer.create(this, R.raw.correctfitness)
+
 
         /** 程序运行时保持屏幕常亮 */
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -242,7 +201,12 @@ class MainActivity : AppCompatActivity() {
 
         VideoFrame = findViewById(R.id.VideoFrame)
         textView9 = findViewById(R.id.textView9)
+
+
+
+
             @SuppressLint("SetTextI18n")
+
 
 
 
@@ -406,28 +370,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun openCamera() {
         /** 音频播放 */
-        val crosslegPlayer = MediaPlayer.create(this, R.raw.crossleg)
-        //val forwardheadPlayer = MediaPlayer.create(this, R.raw.forwardhead)
-        //val standardPlayer = MediaPlayer.create(this, R.raw.standard)
-        val incorrectsound = MediaPlayer.create(this, R.raw.incorrect)
-        val standardPlayer = MediaPlayer.create(this, R.raw.correct)
-        val doneAGroup = MediaPlayer.create(this, R.raw.doneagroup)
-        val doneAll = MediaPlayer.create(this, R.raw.doneall)
-        val hand1fun1wrong = MediaPlayer.create(this, R.raw.hand1fun1wrong)
-        val hand1fun1wrong1 = MediaPlayer.create(this, R.raw.hand1fun1wrong1)
-        val hand1fun2wrong = MediaPlayer.create(this, R.raw.hand1fun2wrong)
-        val hand1fun2wrong1 = MediaPlayer.create(this, R.raw.hand1fun2wrong1)
-        var crosslegPlayerFlag = true
-        var forwardheadPlayerFlag = true
-        var standardPlayerFlag = true
-        var startCount = false
         print("BYE")
         if (isCameraPermissionGranted()) {
             if (cameraSource == null) {
                 cameraSource =
                     CameraSource(surfaceView, selectedCamera, object : CameraSource.CameraSourceListener {
                         override fun onFPSListener(fps: Int) {
-
                             /** 解释一下，tfe_pe_tv 的意思：tensorflow example、pose estimation、text view */
                             //tvDebug.text = getString(R.string.tfe_pe_tv_fps, fps)
                         }
@@ -439,26 +387,7 @@ class MainActivity : AppCompatActivity() {
                         var wrongfps1 = 0
                         var endCountFps = 0;
                         var startTime = 0;
-                        var armdis:Float = 0F;
-                        var armparline:Float = 0F;
-                        var armheight = 0
-                        var handdis:Float = 0F
-                        var handparline:Float = 0F
-                        var handheight = 0
-                        var handheight1 = 0
-                        var armheight1 = 0
                         var wrongmessage:String = ""
-                        var act1 = 0
-                        var act2 = 0
-                        var act3 = 0
-                        var act4 = 0
-                        //var acttime = 0
-                        var requireact = 0
-                        var requireact2 = 0
-                        var requireact3 = 0
-                        var requireact4 = 0
-                        var pairact = 0
-                        var counter = 0
                         @SuppressLint("SetTextI18n")
                         override fun onDetectedInfo2(allData: MutableList<Person>?){
                             //push up
@@ -472,6 +401,7 @@ class MainActivity : AppCompatActivity() {
                                         wrongmessage = ""
                                         start = true
                                         timerCountDown()
+                                        mediaPlayer?.start()
 
                                         passingFpsCount = 0
                                     } else {
