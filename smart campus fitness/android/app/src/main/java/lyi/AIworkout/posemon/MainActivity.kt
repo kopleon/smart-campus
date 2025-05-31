@@ -137,7 +137,7 @@ class MainActivity : AppCompatActivity() {
     private var cameraSource: CameraSource? = null
     private var isClassifyPose = true
     private lateinit var textView9: TextView
-    private var lastTimerStamp: Long = -1L
+    private var lastTimerStamp: Int = 1
     private var timerCount: Int = 60
     private var mediaPlayer: MediaPlayer? = null
 
@@ -167,23 +167,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun timerCountDown() {
-        val nowTime = System.currentTimeMillis()
-        if (lastTimerStamp == -1L) {
+        var nowTime = currentTimeMillis().toInt()
+        if (lastTimerStamp == -1) {
             lastTimerStamp = nowTime
         }
-        textView9.text = "$timerCount 秒"
-        val time = nowTime - lastTimerStamp
+        textView9.text = "${timerCount} 秒"
+        var time = nowTime - lastTimerStamp;
         if (time >= 1000) {
             timerCount -= 1
             lastTimerStamp = nowTime
         }
     }
 
-    private fun resetTimer() {
-        timerCount = 10  // Or your desired starting value
-        lastTimerStamp = -1L
-        textView9.text = "$timerCount 秒"
-    }
+
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -392,17 +388,15 @@ class MainActivity : AppCompatActivity() {
                         override fun onDetectedInfo2(allData: MutableList<Person>?){
                             //push up
                             if(hand1Fun == 1) {
-                                var lefthand = calculateAngle(pointFToArray(allData?.get(0)?.keyPoints?.get(5)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(7)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(9)?.coordinate))
-                                var righthand = calculateAngle(pointFToArray(allData?.get(0)?.keyPoints?.get(6)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(8)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(10)?.coordinate))
-                                var leftside = calculateAngle(pointFToArray(allData?.get(0)?.keyPoints?.get(11)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(13)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(15)?.coordinate))
-                                var rightside = calculateAngle(pointFToArray(allData?.get(0)?.keyPoints?.get(12)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(14)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(16)?.coordinate))
+                                timerCountDown()
+                                val lefthand = calculateAngle(pointFToArray(allData?.get(0)?.keyPoints?.get(5)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(7)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(9)?.coordinate))
+                                val righthand = calculateAngle(pointFToArray(allData?.get(0)?.keyPoints?.get(6)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(8)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(10)?.coordinate))
+                                val leftside = calculateAngle(pointFToArray(allData?.get(0)?.keyPoints?.get(11)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(13)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(15)?.coordinate))
+                                val rightside = calculateAngle(pointFToArray(allData?.get(0)?.keyPoints?.get(12)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(14)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(16)?.coordinate))
                                 if ((lefthand.toDouble() > 150 && leftside.toDouble() > 160.0) || (righthand.toDouble() > 150 && rightside.toDouble() > 160.0))  {
                                     if(passingFpsCount >= 1) {
                                         wrongmessage = ""
                                         start = true
-                                        timerCountDown()
-                                        mediaPlayer?.start()
-
                                         passingFpsCount = 0
                                     } else {
                                         passingFpsCount++
@@ -419,6 +413,7 @@ class MainActivity : AppCompatActivity() {
                                         wrongfps = 0
                                         wrongfps1 = 0
                                         passingFpsCount = 0
+                                        mediaPlayer?.start()
                                     } else {
                                         passingFpsCount++
                                     }
