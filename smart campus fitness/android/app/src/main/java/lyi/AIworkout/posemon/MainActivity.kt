@@ -127,7 +127,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var hands_: TextView
     private lateinit var nowact: TextView
     private lateinit var actTimes: TextView
-    private lateinit var spnCamera: Spinner
     private lateinit var closeimage: Button
     private lateinit var hand1: ImageButton
     private lateinit var hand2: ImageButton
@@ -311,16 +310,11 @@ class MainActivity : AppCompatActivity() {
         actTimes = findViewById(R.id.act_time)
         back = findViewById(R.id.button7)
         hands_ = findViewById(R.id.hands_)
-        hiptick = findViewById(R.id.hiptick)
         handsbacktick = findViewById(R.id.handsbacktick)
         handsfronttick = findViewById(R.id.handsfronttick)
         handsuptick = findViewById(R.id.handsuptick)
-        necktick = findViewById(R.id.necktick)
-        foottick = findViewById(R.id.foottick)
-        foot1tick = findViewById(R.id.foot1tick)
         //tvFPS = findViewById(R.id.tvFps)
         //spnDevice = findViewById(R.id.spnDevice)
-        spnCamera = findViewById(R.id.spnCamera)
         surfaceView = findViewById(R.id.surfaceView)
         showcaseimage = findViewById(R.id.showcaseimage)
         initSpinner()
@@ -585,8 +579,7 @@ class MainActivity : AppCompatActivity() {
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-            spnCamera.adapter = adapter
-            spnCamera.onItemSelectedListener = changeCameraListener
+
         }
     }
 
