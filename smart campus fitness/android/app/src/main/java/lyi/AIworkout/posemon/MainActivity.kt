@@ -139,6 +139,10 @@ class MainActivity : AppCompatActivity() {
     private var lastTimerStamp: Int = 1
     private var timerCount: Int = 60
     private var mediaPlayer: MediaPlayer? = null
+    private var mediaPlayerw: MediaPlayer? = null
+    private var startTime: Int = 1
+    private var timerCount1: Int = -1
+
 
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -178,6 +182,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun timerCountUp() {
+        val nowTime = currentTimeMillis().toInt()
+        if (startTime == -1) {
+            startTime = nowTime
+
+        }
+        var timeElapsed = nowTime - startTime
+
+        if (timeElapsed >= 1000) {
+            timerCount1 += 1
+            startTime = nowTime
+        }
+
+        textView9.text = "$timerCount1 秒"
+    }
+
 
 
 
@@ -187,6 +207,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         mediaPlayer = MediaPlayer.create(this, R.raw.correctfitness)
+        mediaPlayerw = MediaPlayer.create(this, R.raw.wrong)
 
 
         /** 程序运行时保持屏幕常亮 */
@@ -233,9 +254,9 @@ class MainActivity : AppCompatActivity() {
         hand3.setOnClickListener {
             if(!PlayingVideo) {
                 hand1Fun = 3;
+                textView9.text = "0 秒"
                 selectedimage = 3;
                 acttime = 0
-                doingaction = 0
                 smallimageshows.setImageResource(R.drawable.plack)
                 smallimageshows.visibility = View.VISIBLE
             }
@@ -341,9 +362,13 @@ class MainActivity : AppCompatActivity() {
     }
     fun reset(view:View){
         timerCount = 60
+        timerCount1 = 0
         lastTimerStamp = -1
-        textView9.text = "$timerCount 秒"
         doingaction = 0
+    }
+    fun reset1(view:View){
+        timerCount1 = 0
+
     }
 
     /** 检查相机权限是否有授权 */
@@ -379,16 +404,32 @@ class MainActivity : AppCompatActivity() {
                         var startTime = 0;
                         var wrongmessage:String = ""
                         @SuppressLint("SetTextI18n")
-                        override fun onDetectedInfo2(allData: MutableList<Person>?){
+                        override fun onDetectedInfo2(allData: MutableList<Person>?) {
                             //push up
-                            if(hand1Fun == 1) {
+                            if (hand1Fun == 1) {
                                 timerCountDown()
-                                val lefthand = calculateAngle(pointFToArray(allData?.get(0)?.keyPoints?.get(5)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(7)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(9)?.coordinate))
-                                val righthand = calculateAngle(pointFToArray(allData?.get(0)?.keyPoints?.get(6)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(8)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(10)?.coordinate))
-                                val leftside = calculateAngle(pointFToArray(allData?.get(0)?.keyPoints?.get(11)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(13)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(15)?.coordinate))
-                                val rightside = calculateAngle(pointFToArray(allData?.get(0)?.keyPoints?.get(12)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(14)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(16)?.coordinate))
-                                if ((lefthand.toDouble() > 150 && leftside.toDouble() > 160.0) || (righthand.toDouble() > 150 && rightside.toDouble() > 160.0))  {
-                                    if(passingFpsCount >= 1) {
+                                val lefthand = calculateAngle(
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(5)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(7)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(9)?.coordinate)
+                                )
+                                val righthand = calculateAngle(
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(6)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(8)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(10)?.coordinate)
+                                )
+                                val leftside = calculateAngle(
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(11)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(13)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(15)?.coordinate)
+                                )
+                                val rightside = calculateAngle(
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(12)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(14)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(16)?.coordinate)
+                                )
+                                if ((lefthand.toDouble() > 150 && leftside.toDouble() > 160.0) || (righthand.toDouble() > 150 && rightside.toDouble() > 160.0)) {
+                                    if (passingFpsCount >= 1) {
                                         wrongmessage = ""
                                         start = true
                                         passingFpsCount = 0
@@ -415,7 +456,7 @@ class MainActivity : AppCompatActivity() {
                                     countAction = 0
                                     //startTime = 0
                                 }
-                                if(acttime == 9){
+                                if (acttime == 9) {
                                     hand1.alpha = 0.5F
                                     handsbacktick.alpha = 1F
                                     hand1Fun = 2
@@ -426,39 +467,64 @@ class MainActivity : AppCompatActivity() {
                                 //var textcount = "%.2f".format(handtoback.toDouble()) + " Count: " + countAction + "ActTime: "+ acttime
                                 //tvFPS.text = textcount
                                 nowact.text = "正在做:push up"
-                                var counter = ""+doingaction+" times"
+                                var counter = "" + doingaction + " times"
                                 actTimes.text = counter
                                 nowact.alpha = 1F
                                 actTimes.alpha = 1F
                             }
 
                             //situp
-                            if(hand1Fun == 2) {
-                                var leftbody = calculateAngle(pointFToArray(allData?.get(0)?.keyPoints?.get(5)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(11)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(13)?.coordinate))
-                                var rightbody = calculateAngle(pointFToArray(allData?.get(0)?.keyPoints?.get(6)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(12)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(14)?.coordinate))
-                                var leftleg = calculateAngle(pointFToArray(allData?.get(0)?.keyPoints?.get(11)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(13)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(15)?.coordinate))
-                                var rightleg = calculateAngle(pointFToArray(allData?.get(0)?.keyPoints?.get(12)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(14)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(16)?.coordinate))
-                                var lefthand = calculateAngle(pointFToArray(allData?.get(0)?.keyPoints?.get(5)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(7)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(9)?.coordinate))
-                                var righthand = calculateAngle(pointFToArray(allData?.get(0)?.keyPoints?.get(6)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(8)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(10)?.coordinate))
-                                if (((leftbody.toDouble() > 120.0 && leftleg.toDouble() < 90.0) || (rightbody.toDouble() > 120.0 && rightleg.toDouble() < 90.0)) && !start){
-                                    println("passingFpsCount: start: "+start.toString())
-                                    if(passingFpsCount >= 4) {
+                            if (hand1Fun == 2) {
+                                timerCountDown()
+                                var leftbody = calculateAngle(
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(5)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(11)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(13)?.coordinate)
+                                )
+                                var rightbody = calculateAngle(
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(6)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(12)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(14)?.coordinate)
+                                )
+                                var leftleg = calculateAngle(
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(11)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(13)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(15)?.coordinate)
+                                )
+                                var rightleg = calculateAngle(
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(12)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(14)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(16)?.coordinate)
+                                )
+                                var lefthand = calculateAngle(
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(5)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(7)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(9)?.coordinate)
+                                )
+                                var righthand = calculateAngle(
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(6)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(8)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(10)?.coordinate)
+                                )
+                                if (((leftbody.toDouble() > 120.0 && leftleg.toDouble() < 90.0) || (rightbody.toDouble() > 120.0 && rightleg.toDouble() < 90.0)) && !start) {
+                                    println("passingFpsCount: start: " + start.toString())
+                                    if (passingFpsCount >= 4) {
                                         wrongmessage = ""
                                         start = true
-                                        timerCountDown()
+
 
                                         passingFpsCount = 0
                                     } else {
                                         passingFpsCount++
                                         println("passingFpsCount++")
-                                        println("passingFpsCount: "+passingFpsCount)
+                                        println("passingFpsCount: " + passingFpsCount)
                                     }
                                 } else {
                                     //passingFpsCount = 0
                                 }
 
                                 if (((leftbody.toDouble() < 120 && leftleg.toDouble() < 90.0) || (rightbody.toDouble() < 120 && rightleg.toDouble() < 90.0)) && start) {
-                                    if(passingFpsCount >= 4) {
+                                    if (passingFpsCount >= 4) {
                                         start = false
                                         doingaction++
                                         wrongaction = false
@@ -474,66 +540,93 @@ class MainActivity : AppCompatActivity() {
                                     countAction = 0
                                     //startTime = 0
                                 }
-                                if(acttime == 9) {
+                                if (acttime == 9) {
                                     hand1.alpha = 0.5F
                                     handsbacktick.alpha = 1F
                                     hand1Fun = 2
                                     acttime = 0
                                     countAction = 0
                                 }
-                                    //smallimageshows.setImageResource(R.drawable.handup)
+                                //smallimageshows.setImageResource(R.drawable.handup)
                                 //var textcount = "%.2f".format(lefthandup .toDouble()) + " | " +"%.2f".format(righthandup .toDouble())+" | "+"%.2f".format(handup .toDouble()) + " handdis: " + handdis
                                 //tvFPS.text = textcount
                                 nowact.text = "正在做:sit up"
-                                var counter = ""+doingaction+" times"
+                                var counter = "" + doingaction + " times"
                                 actTimes.text = counter
                                 nowact.alpha = 1F
                                 actTimes.alpha = 1F
-                                }
+                            }
 
                             //handsfront
-                            if(hand1Fun == 3) {
-                                var lefthand = calculateAngle(pointFToArray(allData?.get(0)?.keyPoints?.get(5)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(7)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(9)?.coordinate))
-                                var leftleg = calculateAngle(pointFToArray(allData?.get(0)?.keyPoints?.get(11)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(13)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(15)?.coordinate))
-                                var righthand = calculateAngle(pointFToArray(allData?.get(0)?.keyPoints?.get(6)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(8)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(10)?.coordinate))
-                                var rightleg = calculateAngle(pointFToArray(allData?.get(0)?.keyPoints?.get(12)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(14)?.coordinate),pointFToArray(allData?.get(0)?.keyPoints?.get(16)?.coordinate))
+                            if (hand1Fun == 3) {
+                                var lefthand = calculateAngle(
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(5)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(7)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(9)?.coordinate)
+                                )
+                                var leftleg = calculateAngle(
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(11)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(13)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(15)?.coordinate)
+                                )
+                                var righthand = calculateAngle(
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(6)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(8)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(10)?.coordinate)
+                                )
+                                var rightleg = calculateAngle(
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(12)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(14)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(16)?.coordinate)
+                                )
+                                var leftshou = calculateAngle(
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(7)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(5)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(11)?.coordinate)
+                                )
+                                var rightshou = calculateAngle(
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(8)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(6)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(12)?.coordinate)
+                                )
+                                var leftside = calculateAngle(
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(5)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(11)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(13)?.coordinate)
+                                )
+                                var rightside = calculateAngle(
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(6)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(12)?.coordinate),
+                                    pointFToArray(allData?.get(0)?.keyPoints?.get(14)?.coordinate)
+                                )
                                 if (lefthand.toDouble() < 120 && leftleg.toDouble() > 150 && righthand.toDouble() < 120 && rightleg.toDouble() > 150) {
                                     startCountFps++
                                     if (startCountFps >= 10 && startTime == 0) {
                                         time = 0
                                         startAction = 1
                                         startCountFps = 0
-                                        timerCountDown()
+                                        timerCountUp()
                                     }
                                 }
-                                if (lefthand.toDouble() < 120 && leftleg.toDouble() > 150 && righthand.toDouble() < 120 && rightleg.toDouble() > 150 && startTime != 0 ) {
-                                    start = false
-                                    wrongaction = false
-                                    wrongaction1 = false
-                                    wrongfps = 0
-                                    wrongfps1 = 0
-                                    countAction = ((currentTimeMillis() / 1000L).toInt() - startTime)
-                                } else {
-                                    countAction = 0
-                                    startTime = 0
+                                if ((lefthand.toDouble() > 120 && righthand.toDouble() > 120) && (leftleg.toDouble() < 150 && rightleg.toDouble() < 150) && leftside.toDouble() > 150 && rightside.toDouble() > 150) {
+                                    mediaPlayerw?.start()
                                 }
-                                if(acttime == 9){
+                                if (acttime == 9) {
                                     hand3.alpha = 0.5F
                                     handsfronttick.alpha = 1F
                                     hand1Fun = 4
                                     acttime = 0
                                     countAction = 0
-                                    //smallimageshows.setImageResource(R.drawable.hip)
+                                        //smallimageshows.setImageResource(R.drawable.hip)
+                                    }
+                                    nowact.text = "正在做:Plank"
+                                    nowact.alpha = 1F
+                                    actTimes.alpha = 1F
                                 }
-                                nowact.text = "正在做:Plank"
-                                var counter = " "
-                                actTimes.text = counter
-                                nowact.alpha = 1F
-                                actTimes.alpha = 1F
+
+
                             }
 
-
-                        }
 
 
                         /** 对检测结果进行处理 */
