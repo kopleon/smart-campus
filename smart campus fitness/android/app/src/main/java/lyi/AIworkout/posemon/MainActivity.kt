@@ -141,7 +141,7 @@ class MainActivity : AppCompatActivity() {
     private var mediaPlayer: MediaPlayer? = null
     private var mediaPlayerw: MediaPlayer? = null
     private var startTime: Int = 1
-    private var timerCount1: Int = -1
+    private var timerCount1: Int = 0
 
 
     private val requestPermissionLauncher =
@@ -186,16 +186,13 @@ class MainActivity : AppCompatActivity() {
         val nowTime = currentTimeMillis().toInt()
         if (startTime == -1) {
             startTime = nowTime
-
         }
+        textView9.text = "$timerCount1 秒"
         var timeElapsed = nowTime - startTime
-
         if (timeElapsed >= 1000) {
             timerCount1 += 1
             startTime = nowTime
         }
-
-        textView9.text = "$timerCount1 秒"
     }
 
 
@@ -365,11 +362,9 @@ class MainActivity : AppCompatActivity() {
         timerCount1 = 0
         lastTimerStamp = -1
         doingaction = 0
+        textView9.text = "${timerCount1} 秒"
     }
-    fun reset1(view:View){
-        timerCount1 = 0
 
-    }
 
     /** 检查相机权限是否有授权 */
     private fun isCameraPermissionGranted(): Boolean {
